@@ -1,7 +1,7 @@
 const express = require('express')
 const authRoutes = require('./public/authRoutes');
 const privateRouter = require('./private/router');
-const authMiddleware = require('../middlewares/authMiddleware');
+const authMiddleware = require('../features/auth/authMiddleware');
 
 const router = express.Router();
 

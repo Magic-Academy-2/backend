@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { pool } = require('./config/database');
+const { pool } = require('./config/database-mysql');
 const app = require('./app');
 
 const port = process.env.PORT || 4000;
