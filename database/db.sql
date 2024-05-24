@@ -1,4 +1,4 @@
--- Date: 2021-09-29, Database creation
+-- Date: 2024-05-24, Database creation
 CREATE DATABASE IF NOT EXISTS magic_academy;
 USE magic_academy;
 
