@@ -34,6 +34,13 @@ CREATE TABLE IF NOT EXISTS topics (
 ) ENGINE = InnoDB;
 -- -*********************-
 -- user_topics
+CREATE TABLE IF NOT EXISTS user_topics (
+    id INT NOT NULL AUTO_INCREMENT,
+    users_id_ INT NOT NULL,
+    topics_id INT NOT NULL,
+    CONSTRAINT fk_users FOREIGN KEY (users_id) REFERENCES users(id),
+    CONSTRAINT fk_topics FOREIGN KEY (topics_id) REFERENCES topics(id)
+) ENGINE = InnoDB;
 -- -*********************-
 -- courses 
 CREATE TABLE IF NOT EXISTS courses (
@@ -47,3 +54,39 @@ CREATE TABLE IF NOT EXISTS courses (
     CONSTRAINT fk_users FOREIGN KEY (users_id) REFERENCES users(id),
     CONSTRAINT fk_topics FOREIGN KEY (topics_id) REFERENCES topics(id)
 ) ENGINE = InnoDB;
+-- -*********************-
+-- course_sections
+CREATE TABLE IF NOT EXISTS course_sections (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL DEFAULT "Untitled section",
+    courses_id INT NOT NULL,
+    PRIMARY KEY(id)
+    CONSTRAINT fk_courses FOREIGN KEY (courses_id) REFERENCES courses(id)
+)
+-- -*********************-
+-- section_classes
+CREATE TABLE IF NOT EXISTS section_classes (
+    id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(255),
+    class_type_name VARCHAR(20) CHECK ()
+    content TEXT,
+    PRIMARY KEY(id)
+)
+-- -*********************-
+-- comments
+CREATE TABLE IF NOT EXISTS comments (
+    id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(255),
+    content TEXT NOT NULL,
+    date TIMESTAMP NOT NULL,
+    comment_type_name VARCHAR(7) NOT NULL CHECK ('course', 'section', 'class'),
+    comment_types_id INT NOT NULL,
+    comment_id INT,
+    users_id INT NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_users FOREIGN KEY (users_id) REFERENCES users(id)
+    CONSTRAINT self_fk_comment FOREIGN KEY (comment_id) REFERENCES comments(id)
+    
+) ENGINE = InnoDB;
+-- -*********************-
+--
