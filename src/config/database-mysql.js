@@ -1,12 +1,16 @@
 const { createPool } = require('mysql2/promise');
 
-const pool = createPool({
+console.log('DATABASE_URL:', process.env.DATABASE_URL);
+const createPoolParam = process.env.DATABASE_URL ?? {
+
   host: 'localhost', // e.g., 'localhost' or 'your-database-host'
   port: 3306, // Port MySQL
   user: 'root', // e.g., 'root'
   password: '',
   database: 'olp-rirtchie'
-});
+
+};
+const pool = createPool(createPoolParam);
 
 module.exports = { pool };
 
