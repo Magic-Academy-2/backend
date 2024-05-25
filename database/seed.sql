@@ -11,7 +11,7 @@ VALUES ('uninitialized'),
     ('completed');
 -- -*********************-
 -- Example data
---Add some users
+-- Add some users
 INSERT INTO users(name, email, password, user_roles_id)
 VALUES ('Daniel', 'dagutmu667@gmail.com', 'Dan1245', 1),
     (
