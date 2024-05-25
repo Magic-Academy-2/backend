@@ -9,10 +9,7 @@ CREATE TABLE IF NOT EXISTS user_roles (
     PRIMARY KEY(id)
 ) ENGINE = InnoDB;
 
-INSERT INTO user_roles(name)
-VALUES ('admin'),
-    ('student'),
-    ('instructor');
+
 
 -- users
 CREATE TABLE IF NOT EXISTS users (
@@ -25,9 +22,6 @@ CREATE TABLE IF NOT EXISTS users (
     PRIMARY KEY(id),
     CONSTRAINT fk_user_roles FOREIGN KEY (user_roles_id) REFERENCES user_roles(id)
 ) ENGINE = InnoDB;
-
-INSERT INTO users(name, email, password, user_roles_id)
-VALUES ('Daniel', 'dagutmu667@gmail.com', 'Dan1245', 1);
 
 -- topics
 CREATE TABLE IF NOT EXISTS topics (
