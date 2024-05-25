@@ -15,7 +15,7 @@ const areEnvVariablesSet = (() => {
 })()
 
 if (!areEnvVariablesSet) {
-  throw new Error('Not all env variables are set');
+  throw new Error('Database environment (.env) variables are set');
 }
 
 const certPath = path.join(__dirname, '../../database/certs/ca.pem')
