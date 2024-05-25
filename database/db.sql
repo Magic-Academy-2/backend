@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS user_roles (
 ) ENGINE = InnoDB;
 
 INSERT INTO user_roles(name)
-VALUES ("admin"),
-    ("student"),
-    ("instructor");
+VALUES ('admin'),
+    ('student'),
+    ('instructor');
 
 -- users
 CREATE TABLE IF NOT EXISTS users (
@@ -20,14 +20,14 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(20) NOT NULL,
-    avatar_url VARCHAR(255) DEFAULT "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
+    avatar_url VARCHAR(255) DEFAULT 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541',
     user_roles_id INT NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT fk_user_roles FOREIGN KEY (user_roles_id) REFERENCES user_roles(id)
 ) ENGINE = InnoDB;
 
 INSERT INTO users(name, email, password, user_roles_id)
-VALUES ("Daniel", "dagutmu667@gmail.com", "Dan1245", 1);
+VALUES ('Daniel', 'dagutmu667@gmail.com', 'Dan1245', 1);
 
 -- topics
 CREATE TABLE IF NOT EXISTS topics (
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS courses (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(255) NOT NULL,
-    thumbnail_url VARCHAR(255) DEFAULT "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg",
+    thumbnail_url VARCHAR(255) DEFAULT 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg',
     users_id INT NOT NULL,
     topics_id INT NOT NULL,
     PRIMARY KEY(id),
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS courses (
 -- course_sections
 CREATE TABLE IF NOT EXISTS course_sections (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL DEFAULT "Untitled section",
+    name VARCHAR(50) NOT NULL DEFAULT 'Untitled section',
     courses_id INT NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT fk_course_sections_courses FOREIGN KEY (courses_id) REFERENCES courses(id)
