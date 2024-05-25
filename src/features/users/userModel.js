@@ -1,5 +1,6 @@
 const { pool } = require('../../config/database-mysql');
 
+
 exports.getAll = async () => {
   const query = `SELECT * FROM users`;
   const { rows } = await pool.query(query);
