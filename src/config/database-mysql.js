@@ -1,7 +1,4 @@
-const fs = require('fs');
-const path = require('path');
 const { createPool } = require('mysql2/promise');
-
 
 const areEnvVariablesSet = (() => {
   const variables = [
@@ -18,7 +15,6 @@ if (!areEnvVariablesSet) {
   throw new Error('Database environment (.env) variables are set');
 }
 
-const certPath = path.join(__dirname, '../../database/certs/ca.pem')
 const connectionOptions = {
   host: process.env.DATABASE_HOST,
   port: process.env.DATABASE_PORT,
