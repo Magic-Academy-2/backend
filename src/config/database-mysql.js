@@ -5,7 +5,7 @@ const pool = createPool({
   port: 3306, // Port MySQL
   user: 'root', // e.g., 'root'
   password: '',
-  database: 'olp-rirtchie'
+  database: 'magic_academy'
 });
 
 module.exports = { pool };
