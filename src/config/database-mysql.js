@@ -1,16 +1,32 @@
+const fs = require('fs');
+const path = require('path');
 const { createPool } = require('mysql2/promise');
 
-console.log('DATABASE_URL:', process.env.DATABASE_URL);
-const createPoolParam = process.env.DATABASE_URL ?? {
 
-  host: 'localhost', // e.g., 'localhost' or 'your-database-host'
-  port: 3306, // Port MySQL
-  user: 'root', // e.g., 'root'
-  password: '',
-  database: 'olp-rirtchie'
+const areEnvVariablesSet = (() => {
+  const variables = [
+    process.env.DATABASE_HOST,
+    process.env.DATABASE_PORT,
+    process.env.DATABASE_USER,
+    process.env.DATABASE_PASSWORD,
+    process.env.DATABASE_DBNAME,
+  ]
+  return variables.every(variable => variable);
+})()
 
+if (!areEnvVariablesSet) {
+  throw new Error('Not all env variables are set');
+}
+
+const certPath = path.join(__dirname, '../../database/certs/ca.pem')
+const connectionOptions = {
+  host: process.env.DATABASE_HOST,
+  port: process.env.DATABASE_PORT,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_DBNAME,
 };
-const pool = createPool(createPoolParam);
+const pool = createPool(connectionOptions);
 
 module.exports = { pool };
 
