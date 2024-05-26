@@ -8,37 +8,28 @@ exports.getAll = async () => {
 
   // Con mysql
   // const query = `SELECT * FROM users`;
-  // const [rows] = await poolmysql.query(query);
+  // const [rows] = await pool.query(query);
   // return rows;
 }
 
-exports.save = async (username, email, hashedPassword) => {
-
-  // con postgres
-  const query = `INSERT INTO users (username, email, password)
-                 VALUES ($1, $2, $3)
-                 RETURNING id, username, email`;
-  const values = [username, email, hashedPassword];
-  const { rows } = await pool.query(query, values);
-  return rows[0];
-
-  // Con mysql
-  // const query = `INSERT INTO users (username, email, password, role_id) VALUES (?, ?, ?, ?)`;
-  // const values = [username, email, hashedPassword, 1];
-  // try {
-  //   // Ejecuta la consulta usando el pool
-  //   const [resp] = await poolmysql.query(query, values);
-  //   console.log('Resultados de la consulta:', resp.insertId);
-  //   return {
-  //     id: resp.insertId,
-  //     username,
-  //     email
-  //   };
-  // } catch (err) {
-  //   // Maneja el error adecuadamente
-  //   console.error('Error ejecutando la consulta:', err);
-  //   throw err;
-  // }
+exports.save = async ({ name, email, password, userRolesId }) => {
+  const query = `INSERT INTO users (name, email, password, user_roles_id) VALUES (?, ?, ?, ?)`;
+  const values = [name, email, password, userRolesId];
+  try {
+    // Ejecuta la consulta usando el pool
+    const [resp] = await pool.query(query, values);
+    console.log('id del nuevo usuario:', resp.insertId);
+    return {
+      id: resp.insertId,
+      name,
+      email,
+      userRolesId
+    };
+  } catch (err) {
+    // Maneja el error adecuadamente
+    console.error('Error ejecutando la consulta:', err);
+    throw err;
+  }
 };
 
 exports.update = async (id, data) => {
@@ -53,7 +44,7 @@ exports.update = async (id, data) => {
   // Con mysql
   // const query = `UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?`;
   // const values = [data.username, data.email, data.password, id];
-  // const [resp] = await poolmysql.query(query, values);
+  // const [resp] = await pool.query(query, values);
   // return {
   //   id,
   //   username: data.username,
@@ -67,19 +58,13 @@ exports.delete = async (id) => {
 
   // Con mysql
   // const query = `DELETE FROM users WHERE id = ?`;
-  // await poolmysql.query(query, [id]);
+  // await pool.query(query, [id]);
 };
 
 exports.findByEmail = async (email) => {
-  // Con postgres
-  const query = `SELECT * FROM users WHERE email = $1`;
-  const { rows } = await pool.query(query, [email]);
+  const query = `SELECT * FROM users WHERE email = ?`;
+  const [rows] = await pool.query(query, [email]);
   return rows[0];
-
-  // Con mysql
-  // const query = `SELECT * FROM users WHERE email = ?`;
-  // const [rows] = await poolmysql.query(query, [email]);
-  // return rows[0];
 };
 
 exports.findById = async (id) => {

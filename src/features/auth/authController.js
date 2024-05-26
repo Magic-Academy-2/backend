@@ -1,10 +1,19 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
 const { findByEmail, save } = require('../users/userModel');
+const { USER_ROLES } = require('../users/userRolesEnum');
 
 exports.register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { name, email, password, user_roles_id } = req.body;
+    console.log({ body: { name, email, password, user_roles_id } });
+
+    // Verificar el rol del usuario
+    const isUserRoleValid = user_roles_id === USER_ROLES.INSTRUCTOR || user_roles_id === USER_ROLES.STUDENT
+    if (!isUserRoleValid) {
+      return res.status(400).json({ message: `Rol de usuario inválido. Rol de estudiantes: ${USER_ROLES.STUDENT}. Rol de instructores: ${USER_ROLES.INSTRUCTOR}` });
+    }
 
     // Verificar si el usuario ya existe
     let user = await findByEmail(email);
@@ -17,7 +26,7 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Crear nuevo usuario
-    user = await save(username, email, hashedPassword);
+    user = await save({ name, email, password: hashedPassword, userRolesId: user_roles_id });
 
     if (!user) {
       return res.status(404).json({ message: 'Error al crear el usuario' });

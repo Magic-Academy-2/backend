@@ -1,0 +1,18 @@
+@port = 4000
+@host = http://localhost:{{port}}
+@apiUrl = {{host}}/api
+
+### 
+
+# AUTH ROUTES
+# Register a student
+POST {{apiUrl}}/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Maria",
+    "email": "maria@gmail.com",
+    "password": "Maria12345",
+    "user_roles_id": 2
+}
+
