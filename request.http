@@ -4,6 +4,7 @@
 
 ### 
 
+# -*******************************************************************************-
 # AUTH ROUTES
 # Register a student
 POST {{apiUrl}}/auth/register HTTP/1.1
@@ -32,3 +33,5 @@ Content-Type: application/json
 POST {{apiUrl}}/auth/verify-token HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+### -*******************************************************************************-
