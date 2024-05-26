@@ -16,3 +16,19 @@ Content-Type: application/json
     "user_roles_id": 2
 }
 
+###
+# Log in
+POST {{apiUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "maria@gmail.com",
+    "password": "Maria12345"
+}
+
+###
+# Verify token (JWT)
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzE2Njk1MzExLCJleHAiOjE3MTY2OTg5MTF9.KcTXW0ajsrPHIdV6UhHYNjICT39yh7jtweHob3PmcqE
+POST {{apiUrl}}/auth/verify-token HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
