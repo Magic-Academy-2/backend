@@ -15,10 +15,13 @@
 > Las variables de entorno se encuentran en Notion. _[Link del bloque en Notion](https://www.notion.so/daguttt/Magic-Academy-fe2ab300f1494de6a13adc86cf41b7ad?pvs=4#ac17d4aec9934927a1297c6d6bbbd53a)_
    
 3. Instalar las dependencias
+   
     ```bash
     npm i
     ```
-4. Ejecutar el comando para levantar el servidor (proyecto).
+    
+5. Ejecutar el comando para levantar el servidor (proyecto).
+
     ```bash
     npm start # o `npm run start`
     ```
