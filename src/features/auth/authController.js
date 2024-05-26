@@ -1,10 +1,19 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
 const { findByEmail, save } = require('../users/userModel');
+const { USER_ROLES } = require('../users/userRolesEnum');
 
 exports.register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { name, email, password, user_roles_id } = req.body;
+    console.log({ body: { name, email, password, user_roles_id } });
+
+    // Verificar el rol del usuario
+    const isUserRoleValid = user_roles_id === USER_ROLES.INSTRUCTOR || user_roles_id === USER_ROLES.STUDENT
+    if (!isUserRoleValid) {
+      return res.status(400).json({ message: `Rol de usuario inválido. Rol de estudiantes: ${USER_ROLES.STUDENT}. Rol de instructores: ${USER_ROLES.INSTRUCTOR}` });
+    }
 
     // Verificar si el usuario ya existe
     let user = await findByEmail(email);
@@ -17,7 +26,7 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Crear nuevo usuario
-    user = await save(username, email, hashedPassword);
+    user = await save({ name, email, password: hashedPassword, userRolesId: user_roles_id });
 
     if (!user) {
       return res.status(404).json({ message: 'Error al crear el usuario' });
@@ -39,13 +48,13 @@ exports.login = async (req, res) => {
     console.log(email, user);
     if (!user) {
       console.log("Usuario no existe");
-      return res.status(400).json({ message: 'Ese Usuario no existe' });
+      return res.status(400).json({ message: 'Usuario no existe' });
     }
 
     // Comparar contraseñas
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Usuario o contraseña incorrectos' });
+    const samePasswords = await bcrypt.compare(password, user.password);
+    if (!samePasswords) {
+      return res.status(400).json({ message: 'Email o contraseña incorrectos' });
     }
 
     // Generar token JWT
@@ -53,7 +62,7 @@ exports.login = async (req, res) => {
       expiresIn: '1h',
     });
 
-    res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
+    res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
   } catch (err) {
     console.error('Error en login:', err);
     res.status(500).json({ message: 'Error en el servidor' });
@@ -69,7 +78,7 @@ exports.verifyToken = (req, res) => {
 
   try {
     jwt.verify(token, process.env.JWT_SECRET);
-    res.json({ valid: true });
+    res.json({ message: 'Token válido', valid: true });
   } catch (err) {
     // Check is instance of TokenExpiredError
     if (err.name === 'TokenExpiredError') {
