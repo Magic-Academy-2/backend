@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(20) NOT NULL,
+    password VARCHAR(80) NOT NULL,
     avatar_url VARCHAR(255) DEFAULT 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541',
     user_roles_id INT NOT NULL,
     PRIMARY KEY(id),
