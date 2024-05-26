@@ -12,7 +12,7 @@ const areEnvVariablesSet = (() => {
 })()
 
 if (!areEnvVariablesSet) {
-  throw new Error('Database environment (.env) variables are set');
+  throw new Error('Database environment (.env) variables are NOT set');
 }
 
 const connectionOptions = {
