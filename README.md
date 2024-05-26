@@ -11,8 +11,8 @@
    
     ![Demostración estructura de archivos con el archivo `.env`](docs/images/image-to-showcase-dot-env-file.png)
 
-    > [!NOTE]
-    > Las variables de entorno se encuentran en Notion. _[Link del bloque en Notion](https://www.notion.so/daguttt/Magic-Academy-fe2ab300f1494de6a13adc86cf41b7ad?pvs=4#ac17d4aec9934927a1297c6d6bbbd53a)_
+> [!NOTE]
+> Las variables de entorno se encuentran en Notion. _[Link del bloque en Notion](https://www.notion.so/daguttt/Magic-Academy-fe2ab300f1494de6a13adc86cf41b7ad?pvs=4#ac17d4aec9934927a1297c6d6bbbd53a)_
    
 3. Instalar las dependencias
     ```bash
