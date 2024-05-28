@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
+const { findById } = require('../users/userModel');
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
   const token = req.header('Authorization')?.split(' ')[1];
   console.log(token);
   if (!token) {
@@ -9,7 +10,8 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    const user = await findById(decoded.id);
+    req.user = user;
     next();
   } catch (err) {
     console.error('Error en authMiddleware:', err);
