@@ -18,20 +18,46 @@ Content-Type: application/json
 }
 
 ###
-# Log in
+# Log in as student
 POST {{apiUrl}}/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "email": "maria@gmail.com",
-    "password": "Maria12345"
+    "email": "juanpablo@gmail.com",
+    "password": "Juanpablo12345"
+}
+
+###
+# Log in as instructor
+POST {{apiUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "omar@gmail.com",
+    "password": "Omar12345"
+}
+
+###
+# Log in as admin
+POST {{apiUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "dagutmu667@gmail.com",
+    "password": "Dan12345"
 }
 
 ###
 # Verify token (JWT)
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzE2Njk1MzExLCJleHAiOjE3MTY2OTg5MTF9.KcTXW0ajsrPHIdV6UhHYNjICT39yh7jtweHob3PmcqE
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzE2OTE4MTUxLCJleHAiOjE3MTY5MjE3NTF9.PF2qh6HbIBjg0zEDLDjZSyItf8N9l_M-NHEaGhoFa3M
 POST {{apiUrl}}/auth/verify-token HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### -*******************************************************************************-
+
+### -*******************************************************************************-
+# COURSES ROUTES
+# Get student or instructor courses
+GET {{apiUrl}}/courses HTTP/1.1
+Authorization: Bearer {{token}}

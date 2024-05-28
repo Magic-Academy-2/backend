@@ -9,7 +9,6 @@ const router = express.Router();
 router.use('/auth', authRoutes);
 
 // Private routes
-// router.use(authMiddleware); // same as below
-router.use('/', privateRouter);
+router.use('/', authMiddleware, privateRouter);
 
 module.exports = router;

@@ -1,13 +1,23 @@
-const { getAll, save, update, remove } = require("./coursesModel");
+const { findById } = require("../users/userModel");
+const { getAll, save, update, remove, GET_ALL_COURSES_MODEL_ERRORS } = require("./coursesModel");
 
 
 exports.getAll = async (req, res) => {
     try {
-        const courses = await getAll();
+        const user = await findById(req.user.id);
+        const courses = await getAll({ userId: user.id, userRole: user.user_roles_id });
         res.json({ message: "courses fetched successfully", courses });
     } catch (err) {
-        console.error('Error en getAll:', err);
-        res.status(500).json({ message: 'Error en el servidor' });
+        switch (err.message) {
+            case GET_ALL_COURSES_MODEL_ERRORS.INVALID_USER:
+                return res.status(400).json({ message: GET_ALL_COURSES_MODEL_ERRORS.INVALID_USER_ROLE });
+            case GET_ALL_COURSES_MODEL_ERRORS.ADMIN_NOT_IMPLEMENTED:
+                return res.status(400).json({ message: GET_ALL_COURSES_MODEL_ERRORS.ADMIN_NOT_IMPLEMENTED });
+            default:
+                console.error('Error en getAll:', err);
+                res.status(500).json({ message: 'Error en el servidor' });
+        }
+
     }
 }
 

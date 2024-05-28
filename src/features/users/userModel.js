@@ -68,8 +68,7 @@ exports.findByEmail = async (email) => {
 };
 
 exports.findById = async (id) => {
-  const query = `SELECT * FROM users WHERE id = $1`;
-  const { rows } = await pool.query(query, [id]);
-  // TODO: handle case
+  const query = `SELECT * FROM users WHERE id = ?`;
+  const [rows] = await pool.query(query, [id]);
   return rows[0];
 };
