@@ -16,7 +16,7 @@ INSERT INTO users(name, email, password, user_roles_id)
 VALUES (
         'Daniel',
         'dagutmu667@gmail.com',
-        '$2a$10$P9WNfaw/RTKgqryX.89ysel.aFLGdbhmzW7sKoWzbCAXaqR5FXrm.',
+        '$2a$10$P9WNfaw/RTKgqryX.89ysel.aFLGdbhmzW7sKoWzbCAXaqR5FXrm.' /* Check scripts to see real password */,
         1
     ),
     (
@@ -25,7 +25,12 @@ VALUES (
         '$2a$10$.xyNa1Z/yYtoi/bQ6U8hv.0jdTsJ18pD3MyE/tGE0skSVqgNiNrFW',
         2
     ),
-    ('Omar', 'omar@gmail.com', '$2a$10$EVqURP65RxmmaYliedD4AeNAFQb3qM2MJQ.EPXuVOsPCKR0Py2BeC', 3);
+    (
+        'Omar',
+        'omar@gmail.com',
+        '$2a$10$EVqURP65RxmmaYliedD4AeNAFQb3qM2MJQ.EPXuVOsPCKR0Py2BeC',
+        3
+    );
 -- Add some topics
 INSERT INTO topics(name)
 VALUES ('HTML'),
