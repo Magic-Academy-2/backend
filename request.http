@@ -15,7 +15,6 @@ Content-Type: application/json
     "email": "maria@gmail.com",
     "password": "Maria12345",
     "user_roles_id": 2,
-    "topicIds": [3, 4]
 }
 
 ###
@@ -50,12 +49,28 @@ Content-Type: application/json
 
 ###
 # Verify token (JWT)
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzE2OTQ5MDE0LCJleHAiOjE3MTY5NTI2MTR9.i6SZLYUXuuwGDJo6ZQmluDWoQcZYr5vlGgkaYK0YhxQ
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzE3MDAwNjI4LCJleHAiOjE3MTcwMDQyMjh9.uDKtANzAMCDbZQ9Zs-3-i9YDSHVX-vlyD-QGQnM-LnU
 POST {{apiUrl}}/auth/verify-token HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### -*******************************************************************************-
+
+### -*******************************************************************************-
+# USERS ROUTES
+# Save user course topics
+// "Juan pablo" id -> 3
+@userId = 3
+POST {{apiUrl}}/users/{{userId}}/topics
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "topicIds": [3, 4]
+}
+
+### -*******************************************************************************-
+
 
 ### -*******************************************************************************-
 # COURSES ROUTES
@@ -65,9 +80,10 @@ Authorization: Bearer {{token}}
 
 
 ### -*******************************************************************************-
+
+### -*******************************************************************************-
 # TOPICS ROUTES
 # Get all topics
 GET {{apiUrl}}/topics HTTP/1.1
 Authorization: Bearer {{token}}
-
 

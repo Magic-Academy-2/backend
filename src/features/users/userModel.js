@@ -31,6 +31,13 @@ exports.save = async ({ name, email, password, userRolesId }) => {
   }
 };
 
+
+exports.getUserTopics = async (userId) => {
+  const query = `SELECT topics_id FROM user_topics WHERE users_id = ?`;
+  const [rows] = await pool.query(query, [userId]);
+  return rows.map((row) => row.topics_id);
+}
+
 exports.saveUserTopics = async ({ userId, topicIds }) => {
   const values = topicIds.map((topicId) => [userId, topicId]);
   const escapedValues = pool.escape(values);
@@ -38,12 +45,8 @@ exports.saveUserTopics = async ({ userId, topicIds }) => {
     INSERT INTO user_topics(users_id, topics_id)
     VALUES ${escapedValues}`;
   try {
-    const result = await pool.query(query, values);
-    console.log();
-    console.log(
-      `Se agregó ${result.affectedRows} temas como preferencias del usuario con id ${userId}`
-    );
-    console.log();
+    const [result] = await pool.query(query, values);
+    return result.affectedRows;
   } catch (err) {
     console.error('Error guardando los temas de interes del usuario:', err);
     throw err;

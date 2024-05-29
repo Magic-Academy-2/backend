@@ -1,12 +1,12 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { findByEmail, save, saveUserTopics } = require('../users/userModel');
+const { findByEmail, save } = require('../users/userModel');
 const { USER_ROLES } = require('../users/userRolesEnum');
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, user_roles_id, topicIds } = req.body;
+    const { name, email, password, user_roles_id } = req.body;
     console.log({ body: { name, email, password, user_roles_id } });
 
     // Verificar el rol del usuario
@@ -36,11 +36,6 @@ exports.register = async (req, res) => {
       password: hashedPassword,
       userRolesId: user_roles_id,
     });
-
-    // Guardar las preferencias del usuario
-    if (topicIds) {
-      saveUserTopics({ userId: user.id, topicIds });
-    }
 
     if (!user) {
       return res.status(404).json({ message: 'Error al crear el usuario' });
