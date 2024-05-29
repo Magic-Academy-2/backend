@@ -1,18 +1,22 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { findByEmail, save } = require('../users/userModel');
+const { findByEmail, save, saveUserTopics } = require('../users/userModel');
 const { USER_ROLES } = require('../users/userRolesEnum');
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, user_roles_id } = req.body;
+    const { name, email, password, user_roles_id, topicIds } = req.body;
     console.log({ body: { name, email, password, user_roles_id } });
 
     // Verificar el rol del usuario
-    const isUserRoleValid = user_roles_id === USER_ROLES.INSTRUCTOR || user_roles_id === USER_ROLES.STUDENT
+    const isUserRoleValid =
+      user_roles_id === USER_ROLES.INSTRUCTOR ||
+      user_roles_id === USER_ROLES.STUDENT;
     if (!isUserRoleValid) {
-      return res.status(400).json({ message: `Rol de usuario inválido. Rol de estudiantes: ${USER_ROLES.STUDENT}. Rol de instructores: ${USER_ROLES.INSTRUCTOR}` });
+      return res.status(400).json({
+        message: `Rol de usuario inválido. Rol de estudiantes: ${USER_ROLES.STUDENT}. Rol de instructores: ${USER_ROLES.INSTRUCTOR}`,
+      });
     }
 
     // Verificar si el usuario ya existe
@@ -26,7 +30,17 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Crear nuevo usuario
-    user = await save({ name, email, password: hashedPassword, userRolesId: user_roles_id });
+    user = await save({
+      name,
+      email,
+      password: hashedPassword,
+      userRolesId: user_roles_id,
+    });
+
+    // Guardar las preferencias del usuario
+    if (topicIds) {
+      saveUserTopics({ userId: user.id, topicIds });
+    }
 
     if (!user) {
       return res.status(404).json({ message: 'Error al crear el usuario' });
@@ -47,14 +61,16 @@ exports.login = async (req, res) => {
     const user = await findByEmail(email);
     console.log(email, user);
     if (!user) {
-      console.log("Usuario no existe");
+      console.log('Usuario no existe');
       return res.status(400).json({ message: 'Usuario no existe' });
     }
 
     // Comparar contraseñas
     const samePasswords = await bcrypt.compare(password, user.password);
     if (!samePasswords) {
-      return res.status(400).json({ message: 'Email o contraseña incorrectos' });
+      return res
+        .status(400)
+        .json({ message: 'Email o contraseña incorrectos' });
     }
 
     // Generar token JWT
@@ -62,7 +78,7 @@ exports.login = async (req, res) => {
       expiresIn: '1h',
     });
 
-    const { password: _, ...userWithoutPassword } = user
+    const { password: _, ...userWithoutPassword } = user;
 
     res.json({ token, user: userWithoutPassword });
   } catch (err) {
@@ -75,7 +91,9 @@ exports.verifyToken = (req, res) => {
   const token = req.header('Authorization')?.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ message: 'Token no proporcionado', valid: false });
+    return res
+      .status(401)
+      .json({ message: 'Token no proporcionado', valid: false });
   }
 
   try {
@@ -93,7 +111,9 @@ exports.verifyToken = (req, res) => {
 
     // Check if instance of Error
     if (err instanceof Error) {
-      return res.status(500).json({ message: 'Error en el servidor', valid: false });
+      return res
+        .status(500)
+        .json({ message: 'Error en el servidor', valid: false });
     }
   }
 };

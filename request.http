@@ -14,7 +14,8 @@ Content-Type: application/json
     "name": "Maria",
     "email": "maria@gmail.com",
     "password": "Maria12345",
-    "user_roles_id": 2
+    "user_roles_id": 2,
+    "topicIds": [3, 4]
 }
 
 ###

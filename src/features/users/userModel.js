@@ -1,6 +1,5 @@
 const { pool } = require('../../config/database-mysql');
 
-
 exports.getAll = async () => {
   const query = `SELECT * FROM users`;
   const { rows } = await pool.query(query);
@@ -10,7 +9,7 @@ exports.getAll = async () => {
   // const query = `SELECT * FROM users`;
   // const [rows] = await pool.query(query);
   // return rows;
-}
+};
 
 exports.save = async ({ name, email, password, userRolesId }) => {
   const query = `INSERT INTO users (name, email, password, user_roles_id) VALUES (?, ?, ?, ?)`;
@@ -23,11 +22,30 @@ exports.save = async ({ name, email, password, userRolesId }) => {
       id: resp.insertId,
       name,
       email,
-      userRolesId
+      userRolesId,
     };
   } catch (err) {
     // Maneja el error adecuadamente
     console.error('Error ejecutando la consulta:', err);
+    throw err;
+  }
+};
+
+exports.saveUserTopics = async ({ userId, topicIds }) => {
+  const values = topicIds.map((topicId) => [userId, topicId]);
+  const escapedValues = pool.escape(values);
+  const query = `
+    INSERT INTO user_topics(users_id, topics_id)
+    VALUES ${escapedValues}`;
+  try {
+    const result = await pool.query(query, values);
+    console.log();
+    console.log(
+      `Se agregó ${result.affectedRows} temas como preferencias del usuario con id ${userId}`
+    );
+    console.log();
+  } catch (err) {
+    console.error('Error guardando los temas de interes del usuario:', err);
     throw err;
   }
 };
@@ -50,7 +68,7 @@ exports.update = async (id, data) => {
   //   username: data.username,
   //   email: data.email
   // };
-}
+};
 
 exports.delete = async (id) => {
   const query = `DELETE FROM users WHERE id = $1`;
